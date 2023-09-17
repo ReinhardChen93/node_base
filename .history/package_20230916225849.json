@@ -1,0 +1,12 @@
+{
+  "name": "my-cli",
+  "version": "1.0.0",
+  "bin": "./bin/www.js", 
+  "description": "node 学习",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "reinhardChen",
+  "license": "ISC"
+}
