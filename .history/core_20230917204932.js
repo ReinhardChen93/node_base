@@ -5,10 +5,3 @@
 // 有些属性不在global上也可以直接被访问, wxports module.exports require __dirnam __filename
 console.log('global', global)
 console.log('object.keys', Object.keys(global, {showHidden: true}))
-console.log('object.keys', Object.keys(process, {showHidden: true}))
-
-// process.platform 平台 windows 还是 mac
-// nextTIck
-// cwd
-// env
-console.log('process.platform', process.platform)

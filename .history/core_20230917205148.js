@@ -7,8 +7,5 @@ console.log('global', global)
 console.log('object.keys', Object.keys(global, {showHidden: true}))
 console.log('object.keys', Object.keys(process, {showHidden: true}))
 
-// process.platform 平台 windows 还是 mac
-// nextTIck
-// cwd
-// env
+// process.platform
 console.log('process.platform', process.platform)
