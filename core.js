@@ -75,7 +75,7 @@ program.parse()
    └───────────────────────────┘
  */
 // 当主栈执行完成后 会按照吮吸一次执行 timer(setTImeout) -> poll(fs.方法的回调) -> check(setImmediate)
-// 当代码执行完毕后, 会从timer -> poll 检测poll李米娜是否都执行完毕了. 检查一下有没有setImmediate
+// 当代码执行完毕后, 会从timer -> poll 检测poll是否都执行完毕了. 检查一下有没有setImmediate
 // 如果有则执行 setImmediate 如果没有则在这里阻塞 也就是回到timers 继续循环 跟浏览器不同
 // node 中只是将多个宏任务进行了划分 划分到了不同的宏任务队列中.
 // 微任务也是在每个宏任务执行完毕后 才清空
@@ -83,6 +83,18 @@ program.parse()
 // process.nextTick 并不是微任务, 每个宏任务执行完成后会执行nextTick (微任务比nextTick优先级更高)
 
 // /https://nodejs.org/zh-cn/docs/guides/event-loop-timers-and-nexttick
+
+// 当我们主栈代码执行完毕后, 会一次按照node的事件循环队列进行清空处理
+
+// 检查timers 中是否有已经到达时间的任务
+// 进入到poll阶段,主要就是检测是否有文件读写的操作回调, 让他依次执行
+// 检测一下是否有用户编写了setImmediate,就去执行setImmediate,如果没有check相关内容, 则会在poll阶段阻塞
+// 每个阶段存放的任务都是宏任务, 每个宏任务执行完毕后会清空微任务 (和浏览器事件环一致)
+// node10之前是每个阶段执行完后 会清空微任务
+// process.nextTick优先级 高于 微任务 (宏任务 -> nextTick -> 清空微任务 -> 下一个宏任务)
+
+// setTimeout 和 setImmediate在使用的时候 (主模块中不知道谁快谁慢)
+
 process.nextTick(() => {
 
 })
@@ -90,3 +102,17 @@ process.nextTick(() => {
 setImmediate(() => {
 
 })
+
+const fs = require('fs');
+const path = require('path');
+
+fs.readFile(path.resolve(__dirname, 'note.md') , function ()  { // 这个是在poll中,所有优先走setImmediate在使用的时候
+  setTimeout(() => {
+    
+  }, 0);
+  // poll -> check -> timer -> poll
+  setImmediate(() => {
+
+  })
+})
+// nextTick 本质上不是异步 就是要给下一队列中要执行的回调 
