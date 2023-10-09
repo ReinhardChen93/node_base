@@ -12,11 +12,24 @@ const a1 = Buffer.from('你好');
 const a2 = Buffer.from('GYT')
 const a3 = Buffer.alloc(12);
 console.log('a1', a1)
+// 自己实现copy
+// 所谓的copy就是循环buffer中的每意向放到大的buffer中
+// Buffer.prototype.copy = function (target, targetStart, sourceStart = 0, sourceEnd = this.length) {
+//   for (let 1 = 0; 1 < sourceEnd - sourceStart; i++) {
+//     console.log('copy')
+//     target[targetStart + i] = this[sourceStart + i];
+//   }
+// }
 // target 拷贝的目标
-// targetState 从目标的那个位置进行拷贝
-// sourceStatt // 从那个字节开始拷贝
+// targetStart 从目标的那个位置进行拷贝
+// sourceStart // 从那个字节开始拷贝
 // sourceEnd 拷贝到哪个位置
-a1.copy(a3, 0, 0, 6) // api用不到
-a2.copy(a3, 6, 0, 8) // api用不到
-console.log('a3.toString()', a3.toString())
+// a1.copy(a3, 0, 0, 6) // api用不到
+// a2.copy(a3, 6, 0, 8) // api用不到
+// console.log('a3.toString()', a3.toString())
+// 实现concat
+Buffer.concat = function (list, totalLen = this.reduce((memo, current))) {
 
+}
+Buffer.concat([a1, a2])
+console.log('Buffer.concat([a1, a2])', Buffer.concat([a1, a2]).toString())
